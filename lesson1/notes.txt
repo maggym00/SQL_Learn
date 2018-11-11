@@ -1,0 +1,8 @@
+This is just a set of notes that will be used - one for each session - to record commands etc.
+
+SYNTAX ---------
+
+SQL is NOT case sensitive => SELECT is equiv to select.
+
+It is standard practice to put a ; at the end of each statement - some database systems don't strictly require it however it's useful as it allows you to input multiple statements into the same call to the server.
+
