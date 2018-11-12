@@ -1,8 +1,86 @@
 This is just a set of notes that will be used - one for each session - to record commands etc.
 
-SYNTAX ---------
+SYNTAX ----------------------------------
 
 SQL is NOT case sensitive => SELECT is equiv to select.
 
 It is standard practice to put a ; at the end of each statement - some database systems don't strictly require it however it's useful as it allows you to input multiple statements into the same call to the server.
+
+
+SELECT ----------------------------------
+
+SELECT <column name> FROM <table name> ;
+
+can specify multiple columns by putting , between column names, or specify all columns with the wildcard *
+
+SELECT DISTINCT <column name> FROM  <table name> ;
+
+DISTINCT specifies that you only want unique occurrences/combinations of values in the column/columns
+
+COUNT(<column name>) --------------------
+
+COUNT takes one argument and is used within SELECT - it returns the number of entries
+
+ie. SELECT COUNT(DISTINCT <column name>) FROM <table name> ;
+
+returns the number of non-identical entries to the specified column in the table 
+
+WHERE -----------------------------------
+
+The WHERE clause is used to filter records - it is used to extract only the records which fulfil some specification
+
+WHERE is used within select as follows:
+SELECT <column names> FROM <table name> WHERE <condition to be met> ;
+
+Eg.
+
+SELECT Country FROM CustomerInfo WHERE CustomerName = 'Mike' ;
+
+note the ' ' for the name - it's a string (a value) as opposed to a column name which may be treated as a variable
+
+The operators in the filter conditions are as follows
+=		equals
+<>		doesn't equal
+<		less than
+>		greater than
+<=		less than or equal
+>=		greater than or equal
+BETWEEN		between a certain range
+LIKE		search for a pattern
+IN		Specify multiple possible values for a column
+
+AND/OR may also be used to specify multiple or alternate conditions
+
+NOT may be used to specify that you desire the opposite of whatever the condition is
+
+ORDER BY ---------------------------------
+
+used to sort the results that are returned - will do so according to numerical or ascii value (This means that it's case sensitive)
+Default is ascending order - can specify using ASC/DESC keywords
+
+SELECT * From CustomerInfo ORDER BY City ASC ;
+
+will return all columns from CustomerInfo, sorted by alphabetical order in city name.
+You can specify multiple columns so that it orders initially by one and then within that ordering, orders by another.
+For each individual column that you are ordering by, you may specify ASC or DESC
+
+INSERT INTO -------------------------------
+
+Used to insert new data to a table
+The format is
+
+INSERT INTO <table name> (<column1>,<column2>,...) VALUES (<value1>, <value2>,...);
+
+If data is being inserted for every column, there is no need to specify included columns however, just the values.
+
+NULL --------------------------------------
+
+Another option for WHERE conditions - if you want to find all entries where some column is empty,
+
+SELECT * WHERE <column name> IS NULL
+
+or alternatively - all the ones with useful entries
+
+SELECT * WHERE <column name> IS NOT NULL
+
 
