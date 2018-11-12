@@ -1,0 +1,144 @@
+LESSON 2------------------
+
+UPDATE ------------------------------------------------
+
+UPDATE is used to modify existing records in a table. The syntax is
+
+UPDATE <table name> SET <column1> = <value1>, <column2> = <value2>, ... WHERE <some condition> ;
+
+The WHERE condition means that you can set it to update only one value, or update many, according to the conditions you set
+If WHERE is omitted, ALL records will be updated - generally a bad thing
+
+DELETE ------------------------------------------------
+
+DELETE is used to (no shock here) delete records.
+
+DELETE FROM <table name> WHERE <conditions> ;
+
+omitting WHERE will result in everything being deleted
+
+SELECT TOP (limiting number of returns) ---------------
+
+This is a command which comes in especially useful when dealing with large datasets - it's often hugely inefficient to call all examples so if you only want a sample, or the first 3 or whatever...
+
+SELECT TOP <number limit> <column name(s)> FROM <table name> WHERE <condition> ;
+
+The syntax differs depending on your manager however and some formats don't support it. The following statements are equivalent however.
+
+SELECT <column name> FROM <table name> WHERE <condition> LIMIT <number limit> ;
+
+An equivalent, would be to use the ROWNUM keyword in the WHERE clause.
+
+SELECT <column name> FROM <table name> WHERE <condition> AND ROWNUM <= <number limit> ;
+
+	SELECT TOP PERCENT
+	An alternative to specifying a number - you can specify a percentage 
+	SELECT TOP <num> PERCENT <column name> FROM <table name> ;
+
+
+MIN() MAX()--------------------------------------------
+
+
+SELECT MIN(<column name>) FROM <table name> WHERE ...
+
+returns only the minimum value. likewise for MAX
+
+Normally, this command will return the value to you in a table format with one column - MIN(<column name>)
+
+using the 
+AS 
+keyword changes the column name 
+ie
+SELECT MAX(<column name>) AS MaxFromColumn FROM <table name> 
+
+COUNT() AVG() SUM() -----------------------------------
+
+COUNT(<column name>)
+returns number of rows
+
+AVG(<column name>)
+returns the average of a numeric column
+
+SUM(<column name>)
+returns the sum of a numeric column
+
+They are all used as follows:
+SELECT COUNT(<column name>) FROM <table name> WHERE <condition>
+
+LIKE ---------------------------------------------------
+
+LIKE is used within WHERE conditions, to input regex-esque expressions.
+
+There are two wildcard symbols with LIKE,
+	1) %	Which represents 0,1 or more characters
+	2) _	Which represents a single character
+For example;
+
+WHERE CustomerName LIKE 'a%'		finds any values starting with an 'a'
+WHERE CustomerName LIKE '%a'		finds any values ending with an 'a'
+WHERE CustomerName LIKE '%or%'		finds any values that contain 'or' somewhere within them
+WHERE CustomerName LIKE '_r%'		finds any values where the second letter is an 'r'
+WHERE CustomerName LIKE 'a__%'		finds any values starting with 'a' and at least 3 characters long
+
+You can also use NOT for NOT LIKE statements.
+
+In regex style, you can use [] to specify individual options.
+eg
+WHERE CustomerName LIKE '[abc]__%'	finds any values starting with a, b or c that is at least 3 characters long
+
+You may also specify a range
+
+WHERE CustomerName LIKE '[a-c]__%'	does the same as above, but instead specifies any character in the range a-c
+
+You can add ! to the front of these lists to specify that you DON'T want these characters
+
+WHERE CustomerName LIKE '[!abc]__%'	finds any values NOT starting with a, b or c that are at least 3 characters long
+
+IN ------------------------------------------------------
+
+Used as shorthand for multiple OR clauses about the same column, you can write
+
+WHERE CustomerName IN (<value1>,<value2>,...)
+or
+WHERE CustomerName IN (SELECT statement (can be from different table))
+
+eg (for the latter)
+
+SELECT * FROM Customers WHERE Country IN (SELECT Country FROM Suppliers )
+
+In this example, we are saying, return all rows in customers where they share the same country as a supplier
+
+BETWEEN -------------------------------------------------
+
+Used in WHERE conditions
+
+WHERE <column> BETWEEN <value1> AND <value2>
+
+as always, can ram NOT before it to find things outside that range
+For querying dates, there are two possible forms you can specify them in:
+#01/01/2001# or '01-01-2001'
+both are valid
+
+Aliases ---------------------------------------------------
+
+Aliases are use to give a temporary name to a table or column.
+They ares signified by AS (as seen above for min max).
+
+for columns:
+SELECT <column name> AS <alias name> FROM <table name>
+for tables:
+SELECT <column name> FROM <table name> AS <alias name>
+
+Aliases come in massively useful when doing long complicated SQL requests as you can use the alias within the request - making your request a lot more condensed.
+
+Example:
+
+SELECT o.OrderID, o.OrderDate, c.CustomerName 
+FROM Orders AS o, Customers AS c 
+WHERE c.CustomerName='John Smith' AND c.CustomerID=o.CustomerID
+
+The last line is worth noting as it tells the server that it specifically wants John Smith's row in the customer ID AND that the customer ID of any returned Order details must match the order ID of the returned Customer details.
+
+
+
+
