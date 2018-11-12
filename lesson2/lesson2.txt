@@ -137,7 +137,7 @@ SELECT o.OrderID, o.OrderDate, c.CustomerName
 FROM Orders AS o, Customers AS c 
 WHERE c.CustomerName='John Smith' AND c.CustomerID=o.CustomerID
 
-The last line is worth noting as it tells the server that it specifically wants John Smith's row in the customer ID AND that the customer ID of any returned Order details must match the order ID of the returned Customer details.
+The last line is worth noting as it tells the server that it specifically wants John Smith's row in the customer ID AND that the customer ID of any returned Order details must match the order ID of the returned Customer details. If this link is not established between customer IDs, then John Smith will be displayed alongside every single purchase when this query is sent out - since there are 2 tables, there are essentially (#Orders * #Customers) rows, where every row of one is matched with every single row of the other.
 
 
 
