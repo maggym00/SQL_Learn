@@ -1,0 +1,106 @@
+Lesson 3 ----------------------------------------
+
+Started new lesson as joins seem kinda important - worth giving them own section
+
+Joins -------------------------------------------
+
+JOIN clauses are used to combine rows of two or more tables, based on a related column between them in a not dissimilar method to that used for calling on multiple tables using customer ID to link them (covered at end of prev section)
+
+There are 4 different types of JOIN:
+
+	INNER JOIN 		returns records w. matching values in both tables
+	LEFT (OUTER) JOIN	returns ALL records from left table and matched ones from right - the result on any row from right is null if no match
+	RIGHT (OUTER) JOIN	returns ALL records from right table and matched ones from left 
+	FULL (OUTER) JOIN	returns ALL records when there is a match in either left table or right table - result on any row from r/l is null if no match
+
+Syntax is as follows:
+
+SELECT <table1>.<column1>, <table1>.<column2>,...,<table2>.<column1>,...
+FROM <table1> INNER JOIN <table2> ON <table1>.<shared value> = <table2>.<shared value>
+
+      LEFT^               RIGHT^
+
+There is a final type of join that doesn't quite fall under the same category, which is the SELF JOIN.
+The syntax is 
+
+SELECT <column name(s)>
+FROM <table name> T1, <table name> T2
+WHERE condition;
+
+using the same table in both. This is useful if you want to compare variables in one category or something
+
+Example:
+
+SELECT A.CustomerName AS Customer1, B.CustomerName AS Customer2, A.City
+FROM Customers A, Customers B
+WHERE A.City=B.City
+ORDER BY A.City
+
+This matches together all possible pairs of people from the same city
+
+UNION --------------------------------------------
+
+This is used to combine result sets from two or more SELECT statements.
+The columns must have the same data types - eg. numbers, strings, dates, etc
+Each select statement must also have the SAME NUMBER of columns ie so one set of columns doesn't peter out halfway down.
+UNION leaves out duplicates
+The syntax is
+
+SELECT <column name(s)> FROM <table 1>
+UNION
+SELECT <column name(s)> FROM <table 2>
+
+UNION ALL
+Does the same as above but leaves in duplicated data
+
+If you wish to differentiate between them, you could make your own extra column using aliases.
+Example:
+
+SELECT 'Customer' AS Type, ContactName, City, Country
+FROM Customers
+UNION
+SELECT 'Suppliers', ContactName, City, Country
+
+GROUP BY -----------------------------------------
+
+This is often used in conjunction with SUM or AVG or whatever to group the result set into one or more columns
+The syntax is
+
+SELECT <column name(s)>
+FROM <table name>
+WHERE <condition>
+GROUP BY <column name(s)>
+ORDER BY <column name(s)>
+
+Example:
+
+SELECT COUNT(CustomerID), Country
+FROM Customers
+GROUP BY Country;
+
+Will return the number of customers in each country - effectively the same as running a separate SELECT COUNT(CustomerID) for each individual country and showing the UNION of them all
+
+HAVING --------------------------------------------
+
+HAVING is literally the same as WHERE but designed specifically for aggregate functions (COUNT etc.) which WHERE doesn't deal with
+Because of its use with aggregate functions, it is most often found used in conjunction with GROUP BY.
+
+Example:
+
+SELECT COUNT(CustomerID), City
+FROM Customers
+GROUP BY City
+HAVING COUNT(CustomerID)<5 ;
+
+Here, SELECT calls for number of customers in each city, limiting it to the cities where customer count is <5
+
+
+
+
+
+
+
+
+
+
+
