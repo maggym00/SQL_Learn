@@ -1,4 +1,15 @@
 LESSON 2------------------
+==============
+UPDATE
+DELETE
+SELECT TOP
+MIN MAX
+COUNT AVG SUM
+LIKE
+IN
+BETWEEN
+AS (Aliases)
+==============
 
 UPDATE ------------------------------------------------
 

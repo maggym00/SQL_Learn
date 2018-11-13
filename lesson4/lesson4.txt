@@ -1,0 +1,140 @@
+Lesson 4 ------------------------------------------
+===================
+EXISTS
+ANY & ALL
+SELECT INTO
+CASE
+NULL functions
+Stored procedures
+
+===================
+EXISTS --------------------------------------------
+
+EXISTS is used to test for the existence of any record in a subquery
+EXISTS returns true if the subquery returns one or more records
+It is used as a WHERE condition (boolean)
+Syntax is:
+
+SELECT <column name>
+FROM <table name>
+WHERE EXISTS (SELECT <column name> FROM <table name> WHERE <condition>) ;
+
+Useful to use if you aren't actually sure if something exists
+Example:
+
+SELECT SupplierName
+FROM Suppliers
+WHERE EXISTS (SELECT ProductName FROM Products WHERE SupplierId = Suppliers.supplierId AND Price < 20) ;
+
+This query returns the supplier name if that supplier has any products (found in a different table) with a price <20
+
+
+ANY & ALL ------------------------------------------
+
+These are used in conjunction with WHERE and HAVING, and some subquery (as seen above)
+ANY returns true if any one of the values returned by the subquery matches the condition in WHERE / HAVING
+ALL returns true if all of the values returned by the subquery matches the condition in WHERE / HAVING
+
+Syntax:
+SELECT <column name>
+FROM <table name>
+WHERE <column name> <operator> ANY
+(SELECT <column name> FROM <table name> WHERE <condition>)
+
+
+SELECT INTO ----------------------------------------
+
+SELECT INTO is used to copy data across from one table to another (not necessarily in the same database)
+Syntax:
+
+SELECT <column name(s)>
+INTO <newtable> [IN <externaldb>]
+FROM <oldtable>
+WHERE <condition>;
+
+the [] indicate an optional addition (for if you're exporting to some other database)
+
+SELECT INTO can be useful also in making a new, empty table with the formatting of another one. If you just make your where condition something that will always be false (eg 1=0) then it will return an empty table with all the columns of the filled table.
+
+INSERT INTO SELECT ---------------------------------
+
+INSERT INTO SELECT copies data from one table and inserts it into another.
+Syntax
+
+INSERT INTO <table 2>
+SELECT <column name(s)> FROM <table 1>
+WHERE <condition>
+
+ie it's basically INSERT INTO as seen previously, but inserting an entire query return
+
+CASE ------------------------------------------------
+
+Effectively the SQL version of an if - else statement, CASE offers up a bunch of conditions, the first one which is satisfied returns a specified value
+Syntax
+
+CASE
+WHEN <condition 1> THEN <value 1>
+WHEN <condition 2> THEN <value 2>
+...
+ELSE <value N>
+END ;
+
+An example of its use:
+
+SELECT OrderID, Quantity,
+CASE
+    WHEN Quantity > 30 THEN "The quantity is greater than 30"
+    WHEN Quantity = 30 THEN "The quantity is 30"
+    ELSE "The quantity is under 30"
+END AS Statement
+FROM OrderDetails;
+
+So here we see that we're making rows of order ID and quantity and printing a statement about the quantity using CASE. The entire CASE bit is treated as another variable - hence the use of an alias to neaten it up.
+
+Another example:
+
+SELECT CustomerName, City, Country
+FROM Customers
+ORDER BY
+(CASE
+    WHEN City IS NULL THEN Country
+    ELSE City
+END);
+
+Here we are ordering things by the city the person is from, unless it's an empty field - then the country is used.
+
+What can be taken away from these examples is that CASE is pretty flexible - it can be used as a variable anywhere that you would normally put a column name.
+
+NULL functions ----------------------------------------
+Look em up - they're basically for dealing with empty fields if you're doing calcs
+
+Stored procedures -------------------------------------
+SQL version of a C++ function / python method
+Really useful - if you're typing the same thing a lot, save it as a stored procedure then you just call the name of the procedure.
+Syntax:
+
+To create:
+
+CREATE PROCEDURE <procedure name>
+AS <sql statement>
+GO ;
+
+To execute:
+
+EXEC <procedure name>;
+
+A stored procedure with input variables looks like:
+
+CREATE PROCEDURE <procedure name> @<column name1> nvarchar(30), @<column name2> nvarchar(30),...
+AS <sql statement involving variables (Call with an @ in front of them)>
+GO ;
+
+EXEC <procedure name> <column name1>= "some variable", <column name 2>= "some other variable",...
+
+nvarchar is the data type - nvarchar(30) is default. 
+
+COMMENTS ---------------------------------------------
+
+use -- to denote a single line comment.
+multiline comments are same as C - /* */
+

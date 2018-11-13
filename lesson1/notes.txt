@@ -1,5 +1,13 @@
 This is just a set of notes that will be used - one for each session - to record commands etc.
 
+=============
+SELECT
+SELECT DISTINCT
+ORDER BY
+INSERT INTO
+NULL
+=============
+
 SYNTAX ----------------------------------
 
 SQL is NOT case sensitive => SELECT is equiv to select.

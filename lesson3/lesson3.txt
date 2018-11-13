@@ -1,4 +1,11 @@
 Lesson 3 ----------------------------------------
+======================
+JOIN
+UNION
+GROUP BY
+HAVING
+
+======================
 
 Started new lesson as joins seem kinda important - worth giving them own section
 
